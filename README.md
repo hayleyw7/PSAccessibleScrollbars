@@ -8,7 +8,7 @@
 2. Open Terminal to clone repo in correct folder:
     * ```cd %userprofile%/Zomboid/mods```
     * ```git clone https://github.com/hayleyw7/PZHelloWorld.git```
-3. Open Project Zomboid
+3. Open Project Zomboid through Steam debug mode
 4. Install mod on server: 
     * "Host" > "Manage Settings" > "Edit Selected Settings" > "Mods"
     * "Add an installed mod to the list" > "Hello World"
