@@ -1,48 +1,53 @@
------------------------ EXPERIMENT FOR HAYLEY -----------------------
+-- vanilla function in ISScrollBar.lua
+
+-- CREATE OBJECT CLASS USED TO CREATE INSTANCES
 
 function ISScrollBar:instantiate()
-	--self:initialise();
+
+    -- CREATE OBJECT TO DRAW SCRCOLLBAR IN JAVA
+
 	self.javaObject = UIElement.new(self);
+
+    -- LUA - CREATE VARIABLES TO USE WHEN POSITIONING SCROLLBAR IN JAVA
+
+    self.anchorRight = true;
+    self.anchorBottom = true;
+
+    -- vertical variables - vanilla
+
 	if self.vertical then
 		self.anchorLeft = false;
-		self.anchorRight = true;
-		self.anchorBottom = true;
-		self.x = self.parent.width - 16; -- FIXME, width is 17
+		self.x = self.parent.width - 16; -- (vanilla comment = "FIXME, height is 17")
 		self.y = 0;
 		self.width = 17;
 
-        ---------------------------------------------------------------------
-        ---------------------------------------------------------------------
-        --- The width below determine overall space for scrollbar to fit. ---
-        ---------------------------------------------------------------------
-        ---------------------------------------------------------------------
+        -- vertical variables - mod
 
-		if WGS.mod.options.biggerScrollBars or true then 
+		if WGS.mod.options.LargeScrollbars or true then 
 			self.width = 30 
-			self.x = self.parent.width - 29 -- ?
+			self.x = self.parent.width - 29 -- (why is this 1 < 30? test adjusting this)
 		end
 		
 		self.height = self.parent.height;
+
+    -- horizontal variables - vanilla
+
 	else
 		self.anchorTop = false
-		self.anchorRight = true
-		self.anchorBottom = true
 		self.x = 0
-		self.y = self.parent.height - 16 -- FIXME, height is 17
+		self.y = self.parent.height - 16 -- (vanilla comment = "FIXME, height is 17")
 		self.width = self.parent.width - (self.parent.vscroll and 13 or 0)
 		self.height = 17
         
-        ---------------------------------------------------------------------
-        ---------------------------------------------------------------------
-        --- The height below determine overall space for scrollbar to fit. ---
-        ---------------------------------------------------------------------
-        ---------------------------------------------------------------------
+        -- horizontal variables - mod
 		
-		if WGS.mod.options.biggerScrollBars or true then 
+		if WGS.mod.options.LargeScrollbars or true then 
 			self.height = 30 
 			self.y = self.parent.height - 29 -- ?
 		end
 	end
+
+    -- JAVA - POSITION SCROLLBARS USING LUA VARIABLES
 
 	self.javaObject:setX(self.x);
 	self.javaObject:setY(self.y);
@@ -55,27 +60,32 @@ function ISScrollBar:instantiate()
     self.javaObject:setScrollWithParent(false);
 end
 
+-----------------------------------------------------------------
+
+-- 
+
 function ISScrollBar:render()
 
 	if self.vertical then
 		local sh = self.parent:getScrollHeight();
 
 		if(sh > self:getHeight()) then
-
 			if self.doSetStencil then
 				self:setStencilRect(0, 0, self.width, self.height)
 			end
+
             if self.background then
 			    self:drawRect(4, 0, self.width - 4 - 1, self.height, self.backgroundColor.a, self.backgroundColor.r, self.backgroundColor.g, self.backgroundColor.b);
             end
 
 			local del = self:getHeight() / sh;
-
 			local boxheight = del * (self:getHeight() - (16 * 2));
+
 			boxheight = math.ceil(boxheight)
 			boxheight = math.max(boxheight, 8)
 
 			local dif = self:getHeight() - (16 * 2) - boxheight ;
+
 			dif = dif * self.pos;
 			dif = math.ceil(dif)
 
@@ -90,7 +100,7 @@ function ISScrollBar:render()
             ------------------------------------------------------------------------------------------------------------------------------------
             ------------------------------------------------------------------------------------------------------------------------------------
             
-            if WGS.mod.options.biggerScrollBars or true then 
+            if WGS.mod.options.LargeScrollbars or true then 
                 self.barwidth = 30
                 self.barx = 15 
 
@@ -154,7 +164,7 @@ function ISScrollBar:render()
 			self.barwidth = boxwidth
 			self.barheight = 8
 
-            if WGS.mod.options.biggerScrollBars or true then 
+            if WGS.mod.options.LargeScrollbars or true then 
                 self.barheight = 30
                 self.bary = 15
             end
